@@ -9,12 +9,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     @vite('resources/css/app.css')
     <title>{{ $title ?? 'Blog' }}</title>
+    <script src="//unpkg.com/alpinejs" defer></script>
 </head>
 
 <body>
     <x-header />
     <div class="container mx-auto">
         <main class="container mx-auto p-4 mt-4">
+            @if (session('success'))
+                <x-alert type='success' message="{{ session('success') }}" />
+            @endif
+            @if (session('error'))
+                <x-alert type='error' message="{{ session('error') }}" />
+            @endif
             {{ $slot }}
         </main>
     </div>
