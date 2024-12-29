@@ -4,15 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Job;
 use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class JobController extends Controller
 {
+
+    use AuthorizesRequests;
+
     public function index(): View
     {
-        $jobs = Job::all();
+        $jobs = Job::paginate(3);
         return view(
             'jobs.index',
             [
@@ -28,6 +32,7 @@ class JobController extends Controller
 
     public function edit(Job $job)
     {
+        $this->authorize('update', $job);
         return view('jobs.edit', [
             'job' => $job
         ]);
@@ -57,11 +62,12 @@ class JobController extends Controller
             $path = $request->file('company_logo')->store('logos', 'public');
         }
 
+        $user_id = auth()->user()->id;
 
         Job::create([
             'title' => $title,
             'description' => $description,
-            'user_id' => 1,
+            'user_id' => $user_id,
             'salary' => 10000,
             'company_logo' => $path,
         ]);
@@ -71,6 +77,9 @@ class JobController extends Controller
 
     public function update(Request $request, Job $job)
     {
+        $this->authorize('update', $job);
+
+
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string'
@@ -96,6 +105,9 @@ class JobController extends Controller
 
     public function destroy(Job $job)
     {
+        // POLICY
+        $this->authorize('delete', $job);
+
         if ($job->company_logo) {
             Storage::delete('public/logo/' . basename($job->company_logo));
         }

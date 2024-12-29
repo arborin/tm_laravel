@@ -6,7 +6,8 @@
         @empty
             <p>Jobs not found</p>
         @endforelse
-    </div>
 
+    </div>
+    {{ $jobs->links() }}
 
 </x-layout>

@@ -5,17 +5,17 @@
             <a href="{{ url('/') }}">Workopia</a>
         </h1>
         <nav class="hidden md:flex items-center space-x-4">
-            <x-nav-link url="/" :active="request()->is('/')">Dashboard</x-nav-link>
+            <x-nav-link url="/" :active="request()->is('/')">Home</x-nav-link>
             <x-nav-link url="/jobs" :active="request()->is('jobs')">All Jobs</x-nav-link>
             <x-nav-link url="/jobs/saved" :active="request()->is('/jobs/saved')">Saved Jobs</x-nav-link>
             @auth
+                <x-nav-link url="/dashboard" :active="request()->is('/dashboard')" icon='fa-gauge'>Dashboard</x-nav-link>
                 <x-logout url='logout' />
             @else
                 <x-nav-link url="/login" :active="request()->is('/login')">Login</x-nav-link>
                 <x-nav-link url="/register" :active="request()->is('/register')">Register</x-nav-link>
             @endauth
 
-            <x-nav-link url="/dashboard" :active="request()->is('/dashboard')" icon='fa-gauge'>Dashboard</x-nav-link>
 
 
             {{-- 

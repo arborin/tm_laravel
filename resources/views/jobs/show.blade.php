@@ -10,16 +10,19 @@
                         Back To Listings
                     </a>
                     <div class="flex space-x-3 ml-4">
-                        <a href="{{ route('jobs.edit', ['job' => $job->id]) }}"
-                            class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded">Edit</a>
-                        <!-- Delete Form -->
-                        <form method="POST" action="{{ route('jobs.destroy', $job->id) }}">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded">
-                                Delete
-                            </button>
-                        </form>
+                        @can('update', $job)
+                            <a href="{{ route('jobs.edit', ['job' => $job->id]) }}"
+                                class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded">Edit</a>
+                            <!-- Delete Form -->
+                            <form method="POST" action="{{ route('jobs.destroy', $job->id) }}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded">
+                                    Delete
+                                </button>
+                            </form>
+                        @endcan
+
                         <!-- End Delete Form -->
                     </div>
                 </div>
